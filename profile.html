@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - AquaSentinel</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-view">
+        <div class="mobile-app-header">
+            <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+            <span style="font-weight: 800; font-size: 1.2rem;">AquaSentinel</span>
+        </div>
+        <div class="sidebar-overlay"></div>
+
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <span><i class="fa-solid fa-water"></i> AquaSentinel</span>
+                <i class="fa-solid fa-xmark close-sidebar-btn"></i>
+            </div>
+            <div class="sidebar-user">
+                <div class="user-avatar" id="user-initials">JD</div>
+                <img src="" id="sidebar-user-img" class="user-avatar-img hidden-section" alt="User">
+                <div><div id="user-name-display">Juan</div><div style="color: #4ade80; font-size: 0.8rem;">● Active</div></div>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="menu-btn"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="map.html" class="menu-btn"><i class="fa-solid fa-map-location-dot"></i> Coastal Map</a>
+                <a href="report.html" class="menu-btn"><i class="fa-solid fa-pen-to-square"></i> Submit Report</a>
+                <a href="profile.html" class="menu-btn active-nav"><i class="fa-solid fa-user"></i> My Profile</a>
+                <button onclick="app.logout()" class="menu-btn logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </nav>
+        </aside>
+
+        <main>
+            <section id="section-profile" class="content-section">
+                <h2 class="page-title">My Profile</h2>
+                
+                <div class="grid-3 profile-grid">
+                    <div class="card text-center">
+                        <!-- Dynamic Profile Image Logic -->
+                        <div class="user-avatar large" id="profile-initials-large">JD</div>
+                        <img src="" id="profile-img-large" class="user-avatar-img large hidden-section" alt="Profile">
+                        
+                        <h3 id="profile-name">Juan</h3>
+                        <p class="role-text">Volunteer Ranger</p>
+                        
+                        <!-- New Profile Details -->
+                        <div class="profile-details" style="margin-top: 1rem; text-align: left; font-size: 0.9rem; color: #475569;">
+                            <p id="display-bio" style="font-style: italic; margin-bottom: 0.5rem; text-align: center;">"No bio set yet."</p>
+                            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Birthday:</strong></span>
+                                <span id="display-birthday">-</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Age:</strong></span>
+                                <span id="display-age">-</span>
+                            </div>
+                        </div>
+
+                        <button onclick="app.openEditProfile()" class="btn btn-sm btn-outline profile-edit-btn">
+                            <i class="fa-solid fa-pen"></i> Edit Profile
+                        </button>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">History</h3>
+                        <table id="history-table">
+                            <thead><tr><th>Date</th><th>Place</th><th>Details</th><th>Action</th></tr></thead>
+                            <tbody id="history-table-body"></tbody>
+                        </table>
+                        <p id="empty-history-msg">No reports found.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- EDIT PROFILE MODAL -->
+    <div id="edit-profile-modal" class="hidden-section modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Edit Profile</span>
+                <span class="close-modal" onclick="app.closeEditProfile()"><i class="fa-solid fa-xmark"></i></span>
+            </div>
+            <form id="edit-profile-form">
+                <div class="input-group">
+                    <label>Profile Picture</label>
+                    <input type="file" id="edit-image" accept="image/*">
+                </div>
+
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Bio</label>
+                    <textarea id="edit-bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <div class="input-group" style="flex: 2;">
+                        <label>Birthday</label>
+                        <input type="date" id="edit-birthday">
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label>Age</label>
+                        <input type="number" id="edit-age">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Email (Read Only)</label>
+                    <input type="email" id="edit-email" readonly style="background: #f1f5f9; color: #64748b;">
+                </div>
+                
+                <div class="input-group">
+                    <label>New Password</label>
+                    <input type="password" id="edit-password" placeholder="Leave blank to keep current">
+                </div>
+
+                <button type="button" onclick="app.saveProfile()" class="btn btn-primary">SAVE CHANGES</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal-overlay hidden-section">
+        <div class="modal-content delete-modal-card">
+            <div class="delete-icon-circle">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3 style="margin-bottom: 10px; color: #1e293b;">Are you sure?</h3>
+            <p style="color: #64748b; font-size: 0.95rem; line-height: 1.5;">
+                Do you really want to delete this report?<br>This process cannot be undone.
+            </p>
+            <div class="modal-actions">
+                <button onclick="app.closeDeleteModal()" class="btn btn-outline" style="flex:1;">Cancel</button>
+                <button onclick="app.confirmDelete()" class="btn" style="background: #ef4444; color: white; flex:1; border:none;">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
